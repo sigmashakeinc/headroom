@@ -1,5 +1,5 @@
 #!/bin/sh
-# headroom installer for Linux and macOS.
+# headroom installer for Linux x64 and macOS arm64.
 #
 #   curl -fsSL https://raw.githubusercontent.com/sigmashakeinc/headroom/main/install.sh | sh
 #
@@ -94,15 +94,20 @@ if [ -n "$FROM_FILE" ]; then
     printf 'install.sh: warning: no checksums file given. Verification of the local archive is skipped.\n' >&2
   fi
 else
-  case "$(uname -s)" in
-    Linux)  OS=linux ;;
-    Darwin) OS=darwin ;;
-    *) die "unsupported OS: $(uname -s). Use install.ps1 on Windows." ;;
-  esac
-  case "$(uname -m)" in
+  raw_os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  raw_arch="$(uname -m)"
+  case "$raw_arch" in
     x86_64|amd64)  ARCH=amd64 ;;
     aarch64|arm64) ARCH=arm64 ;;
-    *) die "unsupported architecture: $(uname -m)" ;;
+    *) ARCH="$raw_arch" ;;
+  esac
+  case "$raw_os/$ARCH" in
+    linux/amd64)  OS=linux ;;
+    darwin/arm64) OS=darwin ;;
+    *)
+      printf 'headroom: unsupported platform %s/%s; supported: linux x64, macOS arm64, Windows x64\n' "$raw_os" "$ARCH" >&2
+      exit 1
+      ;;
   esac
 
   TAG="${VERSION:-}"

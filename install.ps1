@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  headroom installer for Windows (amd64, arm64).
+  headroom installer for Windows x64 (amd64).
 
 .DESCRIPTION
   powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/sigmashakeinc/headroom/main/install.ps1 | iex"
@@ -67,10 +67,12 @@ try {
   } else {
     $arch = $env:PROCESSOR_ARCHITEW6432
     if (-not $arch) { $arch = $env:PROCESSOR_ARCHITECTURE }
-    switch ($arch) {
-      'AMD64' { $Arch = 'amd64' }
-      'ARM64' { $Arch = 'arm64' }
-      default { Fail "unsupported architecture: $arch" }
+    if ($arch -eq 'AMD64') {
+      $Arch = 'amd64'
+    } else {
+      $archLower = "$arch".ToLower()
+      [Console]::Error.WriteLine("headroom: unsupported platform windows/${archLower}; supported: linux x64, macOS arm64, Windows x64")
+      exit 1
     }
 
     $Tag = $env:VERSION

@@ -6,7 +6,7 @@ concept: compress verbose command output / files **before** they reach the LLM,
 (reversible, lossless, content-addressed local gzip cache).
 
 headroom is public at <https://github.com/sigmashakeinc/headroom> under the MIT
-license. It runs on Linux, macOS, and Windows.
+license. It runs on exactly three platforms: Windows x64, macOS arm64, and Linux x64.
 
 headroom does **NOT** install a silent command-rewrite hook. Usage is always
 explicit: `headroom <subcommand>`. There is no PreToolUse command-rewrite hook
@@ -38,13 +38,15 @@ and no env shim.
 
 ## Install
 
-Linux and macOS:
+Platforms: Windows x64, macOS arm64, Linux x64. No other platform is supported. On any other platform the installers exit with an error.
+
+Linux x64 and macOS arm64:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sigmashakeinc/headroom/main/install.sh | sh
 ```
 
-Windows (PowerShell):
+Windows x64 (PowerShell):
 
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/sigmashakeinc/headroom/main/install.ps1 | iex"
@@ -138,8 +140,11 @@ Those require deps or GPU — both power-unsafe and in violation of stdlib-only.
 ## Source of truth
 
 The SigmaShake monorepo is the source of truth for this tool. A mirror script
-syncs it to <https://github.com/sigmashakeinc/headroom>. Send fixes as pull
-requests. The maintainers port them into the monorepo.
+syncs it to <https://github.com/sigmashakeinc/headroom>.
+
+## Contributing
+
+SigmaShake maintains this repository. The repository does not accept outside issues or pull requests. Issues and outside pull requests are disabled.
 
 ## License
 
